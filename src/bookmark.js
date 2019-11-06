@@ -3,7 +3,7 @@ import $ from 'jquery';
 import store from './store';
 
 //builds template for add item container
-const addItem = function() {
+const addItemTemplate = function() {
   let store = store.STORE;
 
   //if store.adding is true this generates the form

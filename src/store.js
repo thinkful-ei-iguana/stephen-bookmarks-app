@@ -5,6 +5,11 @@ const STORE = {
   filter: 0
 };
 
+//returns the id of a bookmark
+const findById = function(id) {
+  return STORE.bookmarks.find(item => item.id === id);
+};
+
 //adds bookmarks to the store
 const addBookmark = function(item) {
   return STORE.bookmarks.push(item);
