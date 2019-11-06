@@ -95,7 +95,8 @@ const bookmarkString = function(bookmarkArray) {
     //if rating >= filter value creates the element
     if (item.rating >= STORE.filter) {
       createBookmarkElement(item);
-    } 
+    }
+  });
 
   //joins each of the templates together
   return bookmarks.join('');
@@ -126,16 +127,6 @@ const renderError = function() {
   }
 };
 
-//clears the error from the store after the user closes the error window
-const handleClearError = function() {
-
-  $('.error-window').submit('.js-cancel-error', event => {
-    event.preventDefault();
-    store.setError(null);
-    renderError();
-  });
-};
-
 //renders all necessary data to the DOM
 const render = function() {
 
@@ -151,6 +142,16 @@ const render = function() {
 
   //inserts the string into the DOM
   $('.js-bookmark').html(string);
+};
+
+//clears the error from the store after the user closes the error window
+const handleClearError = function() {
+
+  $('.error-window').submit('.js-cancel-error', event => {
+    event.preventDefault();
+    store.setError(null);
+    renderError();
+  });
 };
 
 export default {
