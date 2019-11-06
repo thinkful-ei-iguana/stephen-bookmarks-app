@@ -57,4 +57,35 @@ const getBookmarks = function() {
   
   //returns the apiFetch function with needed arguments
   return apiFetch(`${baseUrl}/bookmarks`);
-}
+};
+
+//posts a new bookmark to the api
+const createBookmark = function(bookmark) {
+
+  //creates a variable to hold the new bookmark object
+  const newBookmark = JSON.stringify({ bookmark });
+
+  //returns the apiFetch with necessary headers and the new bookmark object in the body
+  return apiFetch(`${baseUrl}/bookmarks`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: newBookmark
+  });
+};
+
+//deletes a bookmark from the api
+const deleteBookmark = function(id) {
+
+  //returns api fetch with the item id and the delete method
+  return apiFetch(`${baseUrl}/bookmarks/${id}`, {
+    method: 'DELETE'
+  });
+};
+
+export default {
+  getBookmarks,
+  createBookmark,
+  deleteBookmark
+};
