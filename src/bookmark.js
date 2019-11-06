@@ -3,13 +3,21 @@ import $ from 'jquery';
 import store from './store';
 
 //builds template for add item container
-const addItemTemplate = function() {
+const renderAddItem = function() {
   let store = store.STORE;
 
   //if store.adding is true this generates the form
   if (store.adding) {
     return `<form class='add-item-form js-add-item-form>
-                <label>`
+              
+              <label for='new-bookmark-title'>Add New Bookmark:</label>
+              <input type='text' id='new-bookmark-title' name='title' required>
+              
+              <label for='new-bookmark-url'>URL:</label>
+              <input type='url' id='new-bookmark-url' name='url' required>
+              
+              <label for='new-bookmark-rating'>Rating:</label>
+              <input type='select' `;
   }
 
 };
