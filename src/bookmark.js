@@ -8,7 +8,7 @@ const renderAddItem = function() {
 
   //if store.adding is true this generates the form
   if (store.adding) {
-    return `<form class='add-item-form js-add-item-form>
+    return `<form class='add-item-form js-add-item-form'>
               
               <label for='new-bookmark-title'>Add New Bookmark:</label>
               <input type='text' id='new-bookmark-title' name='title' required>
@@ -17,9 +17,24 @@ const renderAddItem = function() {
               <input type='url' id='new-bookmark-url' name='url' required>
               
               <label for='new-bookmark-rating'>Rating:</label>
-              <input type='select' `;
+              <select name='set-rating' id='new-bookmark-rating' name='rating' required>
+                <option value=''>Set rating</option>
+                <option value='5'>5 stars</option>
+                <option value='4'>4 stars</option>
+                <option value='3'>3 stars</option>
+                <option value='2'>2 stars</option>
+                <option value='1'>1 star</option>
+              </select>
+              
+              <label for='new-bookmark-description'>Description:</label'>
+              <textarea id='new-bookmark-description' name='description' placeholder='Give a brief description' rows='6' cols='34' wrap='hard' required></textarea>
+              
+              <button type='submit' class='button submit-form js-submit-form><span>Add Bookmark</span></button>`;
   }
 
+  //if store.adding is false this renders the add item button
+  // eslint-disable-next-line quotes
+  return `<button type='button' class='button add-item-button         js-add-item-button'><span>Add item</span></button>`;
 };
 
 //generates the html for each item based on if the item is expanded
