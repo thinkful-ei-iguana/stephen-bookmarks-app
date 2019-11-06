@@ -3,7 +3,7 @@ import $ from 'jquery';
 import store from './store';
 
 //creates the store from store.js to make it more accesible in this file
-const store = store.STORE;
+const STORE = store.STORE;
 
 //builds html for add item container
 const addItemForm = function() {
@@ -43,7 +43,7 @@ const addItemButton = function() {
 const renderAddItem = function() {
   
   //if adding is true in store renders form
-  if (store.adding) {
+  if (STORE.adding) {
     $('.js-add-item').html(addItemForm());
   } else {
     $('.js-add-item').html(addItemButton());
@@ -93,7 +93,7 @@ const bookmarkString = function(bookmarkArray) {
   const bookmarks = bookmarkArray.map((item) => {
     
     //if rating >= filter value creates the element
-    if (item.rating >= store.filter) {
+    if (item.rating >= STORE.filter) {
       createBookmarkElement(item);
     } 
 
@@ -115,8 +115,8 @@ const createError = function(errorMessage) {
 const renderError = function() {
 
   //if error exists in store renders it in the DOM
-  if (store.error) {
-    const error = createError(store.error);
+  if (STORE.error) {
+    const error = createError(STORE.error);
     $('.error-window').html(error);
   }
 
@@ -144,11 +144,15 @@ const render = function() {
   renderAddItem();
 
   //sets a variable equal to the bookmarks in the store
-  const bookmarks = [...store.bookmarks];
+  const bookmarks = [...STORE.bookmarks];
 
   //creates a variable equal to the bookmarks html string
   const string = bookmarkString(bookmarks);
 
   //inserts the string into the DOM
   $('.js-bookmark').html(string);
+};
+
+export default {
+  render
 };
