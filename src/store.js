@@ -28,9 +28,18 @@ const toggleAdding = function() {
   this.adding = !this.adding;
 };
 
+//toggles the expanded key/value for specified bookmark
+const toggleExpanded = function(id) {
+  let expandedBookmark = findById(id);
+  expandedBookmark.expand = !expandedBookmark.expand;
+};
+
+//sets the error variable
 const setError = function(error) {
   this.error = error;
-}
+};
+
+
 
 export default {
   bookmarks,
@@ -42,5 +51,6 @@ export default {
   addBookmark,
   setFilter,
   toggleAdding,
+  toggleExpanded,
   setError
 };

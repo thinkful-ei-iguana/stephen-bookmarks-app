@@ -156,9 +156,8 @@ const handleClearError = function() {
 
 //handles user clicking the add bookmark button
 const handleAddButton = function() {
-
   //when the add button is clicked toggles the adding variable then renders the page
-  $('.js-add-bookmark').click('.js-add-bookmark-button', event => {
+  $('.js-add-bookmark').click('.js-add-bookmark-button', () => {
     store.toggleAdding();
     render();
   });
@@ -166,18 +165,39 @@ const handleAddButton = function() {
 
 //uses FormData to create an object that we can use to update the store and api
 const serializeJson = function(form) {
-
   //creates a variable to hols the data from the form
   const formData = new FormData(form);
-
   //creates an object to put the form data into
   const obj = {};
-
   //for each piece of data in the form creates a key/value pair
   formData.forEach((val, name) => obj[name] = val);
-  
   //returns the object as json
   return JSON.stringify(obj);
+};
+
+//handles form submit
+const handleBookmarkSubmit = function() {
+
+  //when user submits form
+  $('.js-add-bookmark').submit('.js-add-bookmark-form', event => {
+    //prevents default
+    event.preventDefault();
+    //creates a variable to hold the form data
+    const formData = $(event.currentTarget())[0];
+    //creates a variable to hold the serialized form data
+    const serializedFormData = serializeJson(formData);
+    //posts the new object to the api then adds the item to the store
+    api.createBookmark(serializedFormData)
+      .then((newBookmark) => {
+        store.addBookmark(newBookmark);
+        render();
+      })
+      //if an error happens sets the error message to the store error variable and renders the error
+      .catch((error) => {
+        store.setError(error.message);
+        renderError;
+      });
+  });
 };
 
 export default {
