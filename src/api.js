@@ -2,13 +2,13 @@
 const baseUrl = 'https://thinkful-list-api.herokuapp.com/stephen';
 
 //creates a wrapper to hold the fetch arguments helps to DRY up the code
-const apiFetch = function(...arguments) {
+const apiFetch = function(...args) {
   
   //creates an error variable to help track error outside of promises
   let error;
 
   //creates the fetch
-  return fetch(...arguments)
+  return fetch(...args)
 
     //starts the promise chain and converts initial response
     .then(response => {
