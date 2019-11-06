@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 import store from './store';
+import api from './api';
 
 //builds html for add item container
 const addItemForm = function() {
@@ -25,14 +26,16 @@ const addItemForm = function() {
       <label for='new-bookmark-description'>Description:</label'>
       <textarea id='new-bookmark-description' name='description' placeholder='Give a brief description' rows='6' cols='34' wrap='hard' required></textarea>
               
-      <button type='submit' class='button submit-form js-submit-form><span>Add Bookmark</span></button>
+      <button class='button submit-form js-submit-form><span>Add Bookmark</span></button>
   `;
 };
 
 //generates the html for the add item button
 const addItemButton = function() {
   return `
-    <button type="button" class="button add-item-button         js-add-item-button"><span>Add item</span></button>
+    <button type="button" class="button add-bookmark-button js-add-bookmark-button">
+      <span>Add item</span>
+    </button>
     `;
 };
 
@@ -41,9 +44,9 @@ const renderAddItem = function() {
   
   //if adding is true in store renders form
   if (store.adding) {
-    $('.js-add-item').html(addItemForm());
+    $('.js-add-bookmark').html(addItemForm());
   } else {
-    $('.js-add-item').html(addItemButton());
+    $('.js-add-bookmark').html(addItemButton());
   }
 };
 
@@ -144,11 +147,37 @@ const render = function() {
 //clears the error from the store after the user closes the error window
 const handleClearError = function() {
 
-  $('.error-window').submit('.js-cancel-error', event => {
+  $('.error-window').click('.js-cancel-error', event => {
     event.preventDefault();
     store.setError(null);
     renderError();
   });
+};
+
+//handles user clicking the add bookmark button
+const handleAddButton = function() {
+
+  //when the add button is clicked toggles the adding variable then renders the page
+  $('.js-add-bookmark').click('.js-add-bookmark-button', event => {
+    store.toggleAdding();
+    render();
+  });
+};
+
+//uses FormData to create an object that we can use to update the store and api
+const serializeJson = function(form) {
+
+  //creates a variable to hols the data from the form
+  const formData = new FormData(form);
+
+  //creates an object to put the form data into
+  const obj = {};
+
+  //for each piece of data in the form creates a key/value pair
+  formData.forEach((val, name) => obj[name] = val);
+  
+  //returns the object as json
+  return JSON.stringify(obj);
 };
 
 export default {
