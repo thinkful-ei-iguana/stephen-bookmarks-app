@@ -52,3 +52,9 @@ const apiFetch = function(...arguments) {
     });
 };
 
+//gets the bookmarks form the api
+const getBookmarks = function() {
+  
+  //returns the apiFetch function with needed arguments
+  return apiFetch(`${baseUrl}/bookmarks`);
+}
