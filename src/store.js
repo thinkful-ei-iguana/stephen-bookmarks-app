@@ -1,41 +1,42 @@
-const STORE = {
-  bookmarks: [],
-  adding: false,
-  error: null,
-  filter: 0
-};
+let bookmarks = [];
+let adding = false;
+let error = null;
+let filter = 0;
 
 //returns the id of a bookmark
 const findById = function(id) {
-  return STORE.bookmarks.find(item => item.id === id);
+  return this.bookmarks.find(item => item.id === id);
 };
 
 //adds bookmarks to the store
 const addBookmark = function(item) {
-  return STORE.bookmarks.push(item);
+  return this.bookmarks.push(item);
 };
 
 //filters the item with given id out of the bookmarks array
 const deleteBookmark = function(id) {
-  STORE.items = STORE.items.filter(item => item.id !== id);
+  this.bookmarks = this.bookmarks.filter(item => item.id !== id);
 };
 
 //sets the filter value in the store object
 const setFilter = function(rating) {
-  STORE.filter = rating;
+  this.filter = rating;
 };
 
 //toggles the adding value of the store object
 const toggleAdding = function() {
-  STORE.adding = !STORE.adding;
+  this.adding = !this.adding;
 };
 
 const setError = function(error) {
-  STORE.error = error;
+  this.error = error;
 }
 
 export default {
-  STORE,
+  bookmarks,
+  adding,
+  error,
+  filter,
   findById,
   deleteBookmark,
   addBookmark,
