@@ -2,6 +2,9 @@ import $ from 'jquery';
 
 import store from './store';
 
+//creates the store from store.js to make it more accesible in this file
+const store = store.STORE;
+
 //builds html for add item container
 const addItemForm = function() {
   return `
@@ -39,9 +42,6 @@ const addItemButton = function() {
 //renders either the form or button to the add item container
 const renderAddItem = function() {
   
-  //creates a variable to hold the store
-  const store = store.STORE;
-
   //if adding is true in store renders form
   if (store.adding) {
     $('.js-add-item').html(addItemForm());
@@ -50,13 +50,13 @@ const renderAddItem = function() {
   }
 };
 
-//generates the html for each item based on if the item is expanded
-const bookmarkTemplate = function(item) {
-
-  //returns the expanded view if expanded is true
+//generates the html for expanded items
+const createBookmarkElement = function(item) {
+  
+  //if item is expanded returns the expanded view
   if (item.expanded) {
     return `
-      <li class='bookmark-item' data-item-id='${item.id}'>
+        <li class='bookmark-item' data-item-id='${item.id}'>
         <div class='expanded-title-container'>
           <h2 class='bookmark-title'>${item.title}</h2>
           <button class='button delete-item js-delete-item'>
@@ -65,30 +65,32 @@ const bookmarkTemplate = function(item) {
         <div class='expanded-body'>
           <p class='description'>${item.description}</p>
         </div>
-       <div class='rating-url'>
-        <a href='${item.url}' target='_blank'>Visit Site</a>
-        <p class'bookmark-rating'>${item.rating}/5</p>
-       </div>
+        <div class='rating-url'>
+          <a href='${item.url}' target='_blank'>Visit Site</a>
+          <p class'bookmark-rating'>${item.rating}/5 Stars</p>
+        </div>
       </li>
     `;
-  }
-
-  //returns condensed bookmark view
-  return `
+  } 
+  
+  //else it returns the condensed view
+  else {
+    return `
     <li class='bookmark-item'>
       <div class='title-container'>
         <h2 class='bookmark-title'>${item.title}</h2>
-        <p class='condensed-rating'>${item.rating}/5</p>
+        <p class='condensed-rating'>${item.rating}/5 Stars</p>
       </div>
     </li>
   `;
+  }
 };
 
 //makes a string of the bookmark elements
 const bookmarkString = function(bookmarkArray) {
 
   //runs bookmarks through the template function
-  const bookmarks = bookmarkArray.map((item) => bookmarkTemplate(item));
+  const bookmarks = bookmarkArray.map((item) => createBookmarkElement(item));
 
   //joins each of the templates together
   return bookmarks.join('');
@@ -107,8 +109,24 @@ const createError = function(errorMessage) {
 //renders the error message in the DOM
 const renderError = function() {
 
-  //creates a variable to hold the store
-  let store = store.STORE;
+  //if error exists in store renders it in the DOM
+  if (store.error) {
+    const error = createError(store.error);
+    $('.error-window').html(error);
+  }
 
+  //else it empties the error container in the DOM
+  else {
+    $('.error-window').empty();
+  }
+};
 
+//clears the error from the store after the user closes the error window
+const handleClearError = function() {
+
+  $('.error-window').submit('.js-cancel-error', event => {
+    event.preventDefault();
+    store.setError(null);
+    renderError();
+  });
 };
