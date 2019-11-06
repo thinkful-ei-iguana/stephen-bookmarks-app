@@ -90,7 +90,12 @@ const createBookmarkElement = function(item) {
 const bookmarkString = function(bookmarkArray) {
 
   //runs bookmarks through the template function
-  const bookmarks = bookmarkArray.map((item) => createBookmarkElement(item));
+  const bookmarks = bookmarkArray.map((item) => {
+    
+    //if rating >= filter value creates the element
+    if (item.rating >= store.filter) {
+      createBookmarkElement(item);
+    } 
 
   //joins each of the templates together
   return bookmarks.join('');
@@ -129,4 +134,21 @@ const handleClearError = function() {
     store.setError(null);
     renderError();
   });
+};
+
+//renders all necessary data to the DOM
+const render = function() {
+
+  //calls the renderError and renderAddItem functions every time the page is rendered
+  renderError();
+  renderAddItem();
+
+  //sets a variable equal to the bookmarks in the store
+  const bookmarks = [...store.bookmarks];
+
+  //creates a variable equal to the bookmarks html string
+  const string = bookmarkString(bookmarks);
+
+  //inserts the string into the DOM
+  $('.js-bookmark').html(string);
 };
