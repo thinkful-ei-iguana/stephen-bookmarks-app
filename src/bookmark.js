@@ -145,7 +145,7 @@ const render = function() {
 
   //sets a variable equal to the bookmarks in the store
   const bookmarks = [...store.bookmarks];
-  console.log(bookmarks);
+  
   //creates a variable equal to the bookmarks html string
   const newString = bookmarkString(bookmarks);
   
@@ -224,10 +224,7 @@ const getBookmarkId = function(bookmark) {
 const handleExpandedView = function() {
   //listens for user clicking the item title
   $('.js-bookmarks').on('click', '.js-title-container', (event) => {
-    event.preventDefault();
-    event.stopPropagation();
     const id = getBookmarkId(event.currentTarget);
-    console.log({id});
     store.toggleExpanded(id);
     render();
   });
@@ -250,9 +247,13 @@ const handleDeleteBookmark = function() {
   });
 };
 
-// const handleFilter = function() {
-//   $('.')
-// };
+const handleFilter = function() {
+  $('.js-filter').change(event => {
+    let ratingFilter = $(event.currentTarget).val();
+    store.filter = ratingFilter;
+    render();
+  });
+};
 
 //binds all of the event handlers together to export them to index.js
 const bindEventHandlers = function() {
@@ -261,6 +262,7 @@ const bindEventHandlers = function() {
   handleBookmarkSubmit();
   handleExpandedView();
   handleDeleteBookmark();
+  handleFilter();
 };
 
 export default {
