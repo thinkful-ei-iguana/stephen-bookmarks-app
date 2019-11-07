@@ -17,7 +17,7 @@ const apiFetch = function(...args) {
       if (!response.ok) {
 
         //sets the error variable to an object containing the response status
-        error = { code: response.status};
+        error = { code: response.status };
 
         //if the response is not json
         if (!response.headers.get('content-type').includes('json')) {
@@ -63,7 +63,7 @@ const getBookmarks = function() {
 const createBookmark = function(bookmark) {
 
   //creates a variable to hold the new bookmark object
-  const newBookmark = JSON.stringify({ bookmark });
+  const newBookmark = bookmark;
 
   //returns the apiFetch with necessary headers and the new bookmark object in the body
   return apiFetch(`${baseUrl}/bookmarks`, {

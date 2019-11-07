@@ -5,12 +5,12 @@ let filter = 0;
 
 //returns the id of a bookmark
 const findById = function(id) {
-  return this.bookmarks.find(item => item.id === id);
+  return bookmarks.find(item => item.id === id);
 };
 
 //adds bookmarks to the store
 const addBookmark = function(item) {
-  return this.bookmarks.push(item);
+  return bookmarks.push(item);
 };
 
 //filters the item with given id out of the bookmarks array
@@ -30,8 +30,8 @@ const toggleAdding = function() {
 
 //toggles the expanded key/value for specified bookmark
 const toggleExpanded = function(id) {
-  let expandedBookmark = findById(id);
-  expandedBookmark.expand = !expandedBookmark.expand;
+  let bookmark = findById(id);
+  bookmark.expand = !bookmark.expand;
 };
 
 //sets the error variable

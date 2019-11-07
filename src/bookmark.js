@@ -6,27 +6,35 @@ import api from './api';
 //builds html for add item container
 const addItemForm = function() {
   return `
-    <form class='add-bookmark-form js-add-bookmark-form'>      
-      <label for='new-bookmark-title'>Add New Bookmark:</label>
-      <input type='text' id='new-bookmark-title' name='title' required>
+    <form class='add-bookmark-form js-add-bookmark-form'>       
+      <div>
+        <label for='new-bookmark-title'>Add New Bookmark:</label>
+        <input type='text' id='new-bookmark-title' name='title' required>
+      </div>
+      
+      <div>
+        <label for='new-bookmark-url'>URL:</label>
+        <input type='url' id='new-bookmark-url' name='url' required>
+      </div>
+      
+      <div>
+        <label for='new-bookmark-rating'>Rating:</label>
+        <select name='rating' id='new-bookmark-rating' name='rating' required>
+          <option value=''>Set rating</option>
+          <option value='5'>5 stars</option>
+          <option value='4'>4 stars</option>
+          <option value='3'>3 stars</option>
+          <option value='2'>2 stars</option>
+          <option value='1'>1 star</option>
+        </select>
+      </div>
+       
+      <div>
+        <label for='new-bookmark-description'>Description:</label'>
+        <textarea id='new-bookmark-description' name='desc' placeholder='Give a brief description' rows='6' cols='34' wrap='hard' required></textarea>
+      </div>
               
-      <label for='new-bookmark-url'>URL:</label>
-      <input type='url' id='new-bookmark-url' name='url' required>
-              
-      <label for='new-bookmark-rating'>Rating:</label>
-      <select name='set-rating' id='new-bookmark-rating' name='rating' required>
-        <option value=''>Set rating</option>
-        <option value='5'>5 stars</option>
-        <option value='4'>4 stars</option>
-        <option value='3'>3 stars</option>
-        <option value='2'>2 stars</option>
-        <option value='1'>1 star</option>
-      </select>
-              
-      <label for='new-bookmark-description'>Description:</label'>
-      <textarea id='new-bookmark-description' name='description' placeholder='Give a brief description' rows='6' cols='34' wrap='hard' required></textarea>
-              
-      <button class='button submit-form js-submit-form><span>Add Bookmark</span></button>
+      <button class='button submit-form js-submit-form'><span>Add Bookmark</span></button>
   `;
 };
 
@@ -54,15 +62,15 @@ const renderAddItem = function() {
 const createBookmarkElement = function(item) {
   
   //if item is expanded returns the expanded view
-  if (item.expanded) {
+  if (item.expand) {
     return `
-        <li class='bookmark-item js-bookmark-item' data-item-id='${item.id}'>
+        <section class='bookmark-item js-bookmark-item' data-item-id='${item.id}'>
         <button type='button' class='title-container js-title-container'>
           <span class='bookmark-title'>${item.title}</span>
           <span class'bookmark-rating'>${item.rating}/5 Stars</span>
         </button>
         <div class='expanded-body'>
-          <p class='description'>${item.description}</p>
+          <p class='description'>${item.desc}</p>
         </div>
         <div class='rating-url'>
           <a href='${item.url}' target='_blank'>Visit Site</a>
@@ -70,19 +78,19 @@ const createBookmarkElement = function(item) {
         <button class='button delete-bookmark js-delete-bookmark'>
           <span>Delete</span>
         </button>
-      </li>
+      </section>
     `;
-  } 
+  }
   
   //else it returns the condensed view
   else {
     return `
-    <li class='bookmark-item js-bookmark-item' data-item-id='${item.id}'>
-      <button type='button' class='title-container js-title-container'>
-        <span class='bookmark-title'>${item.title}</span>
-        <span class='bookmark-rating'>${item.rating}/5 Stars</span>
-      </button>
-    </li>
+      <section class='bookmark-item js-bookmark-item' data-item-id='${item.id}'>
+        <button type='button' class='title-container js-title-container'>
+          <span class='bookmark-title'>${item.title}</span>
+          <span class='bookmark-rating'>${item.rating}/5 Stars</span>
+        </button>
+    </section>
   `;
   }
 };
@@ -91,14 +99,14 @@ const createBookmarkElement = function(item) {
 const bookmarkString = function(bookmarkArray) {
 
   //runs bookmarks through the template function
-  const bookmarks = bookmarkArray.map((item) => {
-    
+  const bookmarks = bookmarkArray.map(item => {
+  
     //if rating >= filter value creates the element
     if (item.rating >= store.filter) {
-      createBookmarkElement(item);
+      return createBookmarkElement(item);
     }
   });
-
+  
   //joins each of the templates together
   return bookmarks.join('');
 };
@@ -110,7 +118,7 @@ const createError = function(errorMessage) {
       <p>${errorMessage}</p>
       <button class='cancel-error js-cancel-error'>Clear</button>
     </div>
-    `;
+  `;
 };
 
 //renders the error message in the DOM
@@ -137,12 +145,12 @@ const render = function() {
 
   //sets a variable equal to the bookmarks in the store
   const bookmarks = [...store.bookmarks];
-
+  console.log(bookmarks);
   //creates a variable equal to the bookmarks html string
-  const string = bookmarkString(bookmarks);
-
+  const newString = bookmarkString(bookmarks);
+  
   //inserts the string into the DOM
-  $('.js-bookmark').html(string);
+  $('.js-bookmarks').html(newString);
 };
 
 //clears the error from the store after the user closes the error window
@@ -159,8 +167,10 @@ const handleClearError = function() {
 const handleAddButton = function() {
   //when the add button is clicked toggles the adding variable then renders the page
   $('.js-add-bookmark').click('.js-add-bookmark-button', () => {
-    store.toggleAdding();
-    render();
+    if (!store.adding) {
+      store.toggleAdding();
+      render();
+    }
   });
 };
 
@@ -169,7 +179,9 @@ const serializeJson = function(form) {
   //creates a variable to hols the data from the form
   const formData = new FormData(form);
   //creates an object to put the form data into
-  const obj = {};
+  const obj = {
+    expand: false
+  };
   //for each piece of data in the form creates a key/value pair
   formData.forEach((val, name) => obj[name] = val);
   //returns the object as json
@@ -184,33 +196,38 @@ const handleBookmarkSubmit = function() {
     //prevents default
     event.preventDefault();
     //creates a variable to hold the form data
-    const formData = $(event.currentTarget())[0];
+    const formData = event.target;
     //creates a variable to hold the serialized form data
     const serializedFormData = serializeJson(formData);
     //posts the new object to the api then adds the item to the store
+    
+    store.toggleAdding();
+    
     api.createBookmark(serializedFormData)
       .then((newBookmark) => {
         store.addBookmark(newBookmark);
         render();
       })
-      //if an error happens sets the error message to the store error variable and renders the error
       .catch((error) => {
         store.setError(error.message);
-        renderError;
+        renderError();
       });
   });
 };
 
 //gets the id of the bookmark
 const getBookmarkId = function(bookmark) {
-  return $(bookmark).closest('.js-bookmark-item').data('item-id');
+  return $(bookmark).closest('section').attr('data-item-id');
 };
 
 //handles switching between expanded and condensed views
 const handleExpandedView = function() {
   //listens for user clicking the item title
-  $('.js-bookmarks').click('.js-title-container', () => {
+  $('.js-bookmarks').on('click', '.js-title-container', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     const id = getBookmarkId(event.currentTarget);
+    console.log({id});
     store.toggleExpanded(id);
     render();
   });
@@ -219,7 +236,7 @@ const handleExpandedView = function() {
 //handles the user deleting a bookmark
 const handleDeleteBookmark = function() {
   //listens for the user clicking the delete button
-  $('.js-bookmarks').click('.js-delete-bookmark', event => {
+  $('.js-bookmarks').on('click', '.js-delete-bookmark', event => {
     const id = getBookmarkId(event.currentTarget);
     api.deleteBookmark(id)
       .then(() => {
@@ -232,6 +249,10 @@ const handleDeleteBookmark = function() {
       });
   });
 };
+
+// const handleFilter = function() {
+//   $('.')
+// };
 
 //binds all of the event handlers together to export them to index.js
 const bindEventHandlers = function() {
