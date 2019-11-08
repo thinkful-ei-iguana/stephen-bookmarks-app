@@ -7,17 +7,17 @@ import api from './api';
 const addItemForm = function() {
   return `
     <form class='add-bookmark-form js-add-bookmark-form'>       
-      <div>
-        <label for='new-bookmark-title'>Add New Bookmark:</label>
+      <div class='form-input'>
+        <label for='new-bookmark-title'>Title:</label>
         <input type='text' id='new-bookmark-title' name='title' required>
       </div>
       
-      <div>
+      <div class='form-input'>
         <label for='new-bookmark-url'>URL:</label>
         <input type='url' id='new-bookmark-url' name='url' required>
       </div>
       
-      <div>
+      <div class='form-input'>
         <label for='new-bookmark-rating'>Rating:</label>
         <select name='rating' id='new-bookmark-rating' name='rating' required>
           <option value=''>Set rating</option>
@@ -29,12 +29,17 @@ const addItemForm = function() {
         </select>
       </div>
        
-      <div>
-        <label for='new-bookmark-description'>Description:</label'>
-        <textarea id='new-bookmark-description' name='desc' placeholder='Give a brief description' rows='6' cols='34' wrap='hard' required></textarea>
+      <div class='form-input'>
+        <label for='new-bookmark-description' class='desc'>Description:</label'>
+        <textarea id='new-bookmark-description' name='desc' placeholder='Give a brief description' rows='6' cols='20' wrap='hard' required></textarea>
       </div>
-              
-      <button class='button submit-form js-submit-form'><span>Add Bookmark</span></button>
+       
+      <div class='form-button'>
+        <button class='button submit-form js-submit-form'>
+          <span>Add Bookmark</span>
+        </button>
+      </div>
+    </form>
   `;
 };
 
@@ -42,7 +47,7 @@ const addItemForm = function() {
 const addItemButton = function() {
   return `
     <button type="button" class="button add-bookmark-button js-add-bookmark-button">
-      <span>Add item</span>
+      <span>New Bookmark</span>
     </button>
     `;
 };
@@ -65,20 +70,22 @@ const createBookmarkElement = function(item) {
   if (item.expand) {
     return `
         <section class='bookmark-item js-bookmark-item' data-item-id='${item.id}'>
-        <button type='button' class='title-container js-title-container'>
-          <span class='bookmark-title'>${item.title}</span>
-          <span class'bookmark-rating'>${item.rating}/5 Stars</span>
-        </button>
-        <div class='expanded-body'>
-          <p class='description'>${item.desc}</p>
-        </div>
-        <div class='rating-url'>
-          <a href='${item.url}' target='_blank'>Visit Site</a>
-        </div>
-        <button class='button delete-bookmark js-delete-bookmark'>
-          <span>Delete</span>
-        </button>
-      </section>
+          <button type='button' class='expanded-title-container js-title-container'>
+            <span class='bookmark-title'>${item.title}</span>
+            <span class'bookmark-rating'>${item.rating}/5 Stars</span>
+          </button>
+          <div class='expanded-container'>
+            <div class='expanded-body'>
+              <p class='description'>${item.desc}</p>
+            </div>
+            <div class='rating-url'>
+            <a href='${item.url}' target='_blank'>Visit Site</a>
+            </div>
+            <button class='button delete-bookmark js-delete-bookmark'>
+              <span>Delete</span>
+            </button>
+          </div>
+        </section>
     `;
   }
   
@@ -127,12 +134,12 @@ const renderError = function() {
   //if error exists in store renders it in the DOM
   if (store.error) {
     const error = createError(store.error);
-    $('.error-window').html(error);
+    $('.js-error-window').html(error);
   }
 
   //else it empties the error container in the DOM
   else {
-    $('.error-window').empty();
+    $('.js-error-window').empty();
   }
 };
 
@@ -156,7 +163,7 @@ const render = function() {
 //clears the error from the store after the user closes the error window
 const handleClearError = function() {
 
-  $('.error-window').click('.js-cancel-error', event => {
+  $('.js-error-window').on('click', '.js-cancel-error', event => {
     event.preventDefault();
     store.setError(null);
     renderError();

@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Permanent+Marker&display=swap" rel="stylesheet">
   <title>Mark It!</title>
 </head>
 <body>
 
-  <header><h1>Mark It!</h1></header>
+  <header><h1>Mark-it!</h1></header>
 
   <div class='error-window js-error-window'>
 
@@ -18,15 +19,17 @@
 
   </div>
 
-  <label for='filter-by-rating'>Filter by:</label>
-  <select class='filter js-filter' id='filter-by-rating'>
-    <option value='0'>Minimum Rating</option>
-    <option value='5'>5 stars</option>
-    <option value='4'>4 stars</option>
-    <option value='3'>3 stars</option>
-    <option value='2'>2 stars</option>
-    <option value='1'>1 star</option>
-  </select> 
+  <div class='filter'></div>
+    <label for='filter-by-rating'>Filter by:</label>
+    <select class='filter js-filter' id='filter-by-rating'>
+      <option value='0'>Minimum Rating</option>
+      <option value='5'>5 stars</option>
+      <option value='4'>4 stars</option>
+      <option value='3'>3 stars</option>
+      <option value='2'>2 stars</option>
+      <option value='1'>1 star</option>
+    </select>
+  </div> 
 
   <div class='bookmarks js-bookmarks'>
     

@@ -1,3 +1,98 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #AAFF96;
+  font-family: 'Bree Serif', serif;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+}
+
 h1 {
-  color: green;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 4em;
+}
+
+.error-window {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.add-bookmark {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.add-bookmark-button {
+  width: 40%;
+  font-size: 1.5em
+}
+
+form label {
+  display: inline-block;
+  min-width: 30%;
+}
+
+.form-input {
+  margin-bottom: 5px;
+}
+
+textarea {
+  vertical-align: top;
+}
+
+.form-button {
+  text-align: center;
+}
+
+.filter {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.bookmarks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bookmark-item {
+  width: 90%;
+}
+
+.expanded-container {
+  background-color: #BACCB6;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.title-container {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.expanded-title-container {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+@media (min-width: 1024) {
+  .title-container,
+  .expanded-title-container {
+    font-size: 45px;
+    font-weight: 600;
+  }
 }
