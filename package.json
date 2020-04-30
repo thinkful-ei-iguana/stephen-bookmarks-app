@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/thinkful-ei-iguana/stephen-bookmarks-app#readme",
   "dependencies": {
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "normalize-scss": "^7.0.1",
     "normalize.css": "^8.0.1"
   },
